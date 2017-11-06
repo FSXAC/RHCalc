@@ -71,7 +71,8 @@ function RH() {
     }
 
     // do some more RH stuff
-    computeRH(coeff);
+    var matrix = computeRH(coeff);
+    outputStability(checkStability(matrix));
 }
 
 function getCoefficients(order) {
@@ -134,6 +135,7 @@ function computeRH(coeff) {
     }
 
     console.log(matrix);
+    return matrix;
 }
 
 // Generates a matrix with an appropriate size, then put the coeffcients inside
@@ -173,4 +175,23 @@ function determinant(X) {
     }
 
     return(det);
+}
+
+function checkStability(matrix) {
+    for (var i = 0; i < matrix.length; i++) {
+        if (matrix[i][0] < 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function outputStability(stable) {
+    var txt;
+    if (stable) {
+        txt = 'System is stable!';
+    } else {
+        txt = 'System is unstable!';
+    }
+    $("#stable_result").html(txt);
 }
