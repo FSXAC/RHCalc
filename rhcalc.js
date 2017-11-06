@@ -71,9 +71,7 @@ function RH() {
     }
 
     // do some more RH stuff
-
-
-    console.log(coeff);
+    computeRH(coeff);
 }
 
 function getCoefficients(order) {
@@ -104,5 +102,75 @@ function checkAllZero(coeff) {
 
 // returns a lower bound and upper bound for k
 function computeRH(coeff) {
+    var matrix = makeRHMatrix(coeff);
+    var rows = matrix.length;
+    var cols = matrix[0].length;
 
+    // for each of the remaining rows
+    for (var i = 2; i < rows; i++) {
+        var divider = matrix[i - 1][0];
+        var head1 = matrix[i - 2][0];
+        var head2 = matrix[i - 1][0];
+
+        for (var j = 0; j < cols; j++) {
+            // TODO: don't need to calculate some 0 cases
+            // TODO: if possible, use corner tricks
+
+            var tail1 = matrix[i - 2][j + 1];
+            var tail2 = matrix[i - 1][j + 1];
+            if (tail1 === undefined) {
+                tail1 = 0;
+            }
+            if (tail2 === undefined) {
+                tail2 = 0;
+            }
+
+            // console.log([divider, head1, tail1, head2, tail2]);
+
+            var m = (-1 / divider) * determinant([head1, tail1, head2, tail2]);
+            // console.log(m);
+            matrix[i][j] = m;
+        }
+    }
+
+    console.log(matrix);
+}
+
+// Generates a matrix with an appropriate size, then put the coeffcients inside
+function makeRHMatrix(coeff) {
+    var cols = Math.ceil(coeff.length / 2);
+    var rows = coeff.length;
+
+    // Create 2d array for the matrix full of 0s    
+    var mat = new Array(rows);
+    for (var r = 0; r < rows; r++) {
+        mat[r] = new Array(cols);
+        for (var c = 0; c < cols; c++) {
+            mat[r][c] = 0;
+        }
+    }
+    
+    // Fill in the coefficients
+    for (var i = 0; i < coeff.length; i++) {
+        var row = i % 2;
+        var col = Math.floor(i / 2);
+        mat[row][col] = coeff[i];
+    }
+
+    return mat;
+}
+
+// Compute the determinant of matrix [[a, b], [c, d]] represented in 1D as [a, b, c, d]
+function determinant(X) {
+    if (X.length < 4) {
+        console.error("Error: determinant takes 2x2 matrix or array of 4");
+        return;
+    }
+
+    var det = X[0] * X[3] - X[1] * X[2];
+    if (isNaN(det)) {
+        det = 0;
+    }
+
+    return(det);
 }
