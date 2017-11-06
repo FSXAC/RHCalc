@@ -1,2 +1,2 @@
 # RHCalc
-Routh Herwitz Calculator
+Routh-Hurwitz Calculator
