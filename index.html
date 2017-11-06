@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Muchen :: RHCalc</title>
+    <title>&#x1F56F; RHCalc</title>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -84,15 +84,15 @@
                     <span id="sys-order-text">-th</span><span> order system</span>
                 </div>
                 <hr>
-                <p>Denominator</p>
+                <p>Closed Loop Denominator</p>
                 <div id="denom_input" class="input-group">
-                    <input class="coeff-input" type="number" value="0">
+                    <input id="denom_coeff_1" class="coeff-input" type="number" value="0">
                     <span><i>s</i>+</span>
-                    <input class="coeff-input" type="number" value="0">
+                    <input id="denom_coeff_0"class="coeff-input" type="number" value="0">
                 </div>
             </div>
             <div class="panel-footer">
-                <button class="btn btn-default">Go!</button>
+                <button id="compute-rh" class="btn btn-default">Go!</button>
             </div>
         </div>
 
