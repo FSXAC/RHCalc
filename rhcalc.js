@@ -45,7 +45,7 @@ function regenDenomInputHTML(order) {
     }
 
     // Constant term
-    htmlstr += '<input id="denom_coeff_0" class="coeff-input" type="number" value="0">';
+    htmlstr += '<input id="denom_coeff_0" class="coeff-input" type="number" value="1">';
 
     return htmlstr
 }
