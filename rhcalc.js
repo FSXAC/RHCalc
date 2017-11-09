@@ -113,9 +113,12 @@ function computeRH(coeff) {
         var head1 = matrix[i - 2][0];
         var head2 = matrix[i - 1][0];
 
+        // TODO: don't need to calculate some 0 cases
+        // TODO: if possible, use corner tricks
+
+        // we don't need to do the first two rows
+        // for the row 3-4, we do -1 of the total columns
         for (var j = 0; j < cols; j++) {
-            // TODO: don't need to calculate some 0 cases
-            // TODO: if possible, use corner tricks
 
             var tail1 = matrix[i - 2][j + 1];
             var tail2 = matrix[i - 1][j + 1];
