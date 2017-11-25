@@ -50,6 +50,16 @@
         .coeff-input {
             width: 4em;
         }
+
+        .table-matrix {
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid #EEE;
+            text-align: center;
+        }
+        .table-matrix td {
+            padding: 0.3em 1em;
+        }
     </style>
 </head>
 
@@ -84,7 +94,7 @@
                     <span id="sys-order-text">-th</span><span> order system</span>
                 </div>
                 <hr>
-                <p>Closed Loop Denominator</p>
+                <p>Characteristic Equation (Closed Loop Denominator)</p>
                 <div id="denom_input" class="input-group">
                     <input id="denom_coeff_1" class="coeff-input" type="number" value="0">
                     <span><i>s</i>+</span>
@@ -101,7 +111,8 @@
                 <h3 class="panel-title">Matrix</h3>
             </div>
             <div class="panel-body">
-
+                <table id="rh-matrix" class="table-matrix">
+                </table>
             </div>
         </div>
 

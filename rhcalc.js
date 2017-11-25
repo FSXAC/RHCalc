@@ -1,9 +1,11 @@
+// Event handler for the routh hurwitz button
 jQuery(document).ready(function ($) {
     $('#compute-rh').on('click', function() {
         RH();
     });
 });
 
+// When we change the order of the system
 function systemOrderChangeEvent() {
     var $sysOrderInput = $("#sys-order");
     var $sysOrderText = $("#sys-order-text")
@@ -30,26 +32,23 @@ function systemOrderChangeEvent() {
     }
 }
 
+// Regenerate the input boxes based on system order entered
 function regenDenomInputHTML(order) {
     htmlstr = '';
-
     for (var i = order; i > 0; i--) {
         htmlstr += '<input id="denom_coeff_' + i + '" class="coeff-input" type="number" value="0">';
         htmlstr += '<span>s</span>';
-
         if (order > 1) {
-            htmlstr += '<sup>' + i + '</sup>'
+            htmlstr += '<sup>' + i + '</sup>';
         }
-
         htmlstr += '+';
     }
-
     // Constant term
     htmlstr += '<input id="denom_coeff_0" class="coeff-input" type="number" value="1">';
-
-    return htmlstr
+    return htmlstr;
 }
 
+// Run the main routh hurwitz function
 function RH() {
     // Get order
     var order = $("#sys-order").val();
@@ -73,10 +72,12 @@ function RH() {
     // do some more RH stuff
     var matrix = computeRH(coeff);
     outputStability(checkStability(matrix));
+    outputMatrix(matrix);
 }
 
+// Get coefficients from HTML and return as an array
 function getCoefficients(order) {
-    var coeff = []
+    var coeff = [];
     for (var i = order; i >= 0; i--) {
         var ci = parseFloat($('#denom_coeff_' + i).val());
 
@@ -92,6 +93,7 @@ function getCoefficients(order) {
     return coeff;
 }
 
+// Returns true if all of the coefficients are 0
 function checkAllZero(coeff) {
     for (var i = 0, l = coeff.length; i < l; i++) {
         if (coeff[i] != 0) {
@@ -110,6 +112,12 @@ function computeRH(coeff) {
     // for each of the remaining rows
     for (var i = 2; i < rows; i++) {
         var divider = matrix[i - 1][0];
+
+        // if the 'b' value is 0, then set it to a small number
+        if (divider == 0) {
+            divider = 1e-10;
+        }
+
         var head1 = matrix[i - 2][0];
         var head2 = matrix[i - 1][0];
 
@@ -197,4 +205,21 @@ function outputStability(stable) {
         txt = 'System is unstable!';
     }
     $("#stable_result").html(txt);
+}
+
+// Generate HTML for the matrix
+function outputMatrix(matrix) {
+    var mat;
+    for (var row = 0; row < matrix.length; row++) {
+        thisRow = matrix[row];
+        mat += '<tr>';
+        for (var col = 0; col < thisRow.length; col++) {
+            mat += '<td>';
+            mat += thisRow[col];
+            mat += '</td>';
+        }
+        mat += '</tr>';
+    }
+
+    $("#rh-matrix").html(mat);
 }
