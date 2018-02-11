@@ -3,6 +3,10 @@ jQuery(document).ready(function ($) {
     $('#compute-rh').on('click', function() {
         RH();
     });
+
+    // Hide result elements
+    $("#rh-matrix-card").hide();
+    $("#result-card").hide();
 });
 
 // When we change the order of the system
@@ -39,7 +43,7 @@ function regenDenomInputHTML(order) {
         htmlstr += '<input id="denom_coeff_' + i + '" class="coeff-input" type="number" value="0">';
         htmlstr += '<span>s</span>';
         if (order > 1) {
-            htmlstr += '<sup>' + i + '</sup>';
+            htmlstr += '<sup class="sup-dense">' + i + '</sup>';
         }
         htmlstr += '+';
     }
@@ -205,6 +209,7 @@ function outputStability(stable) {
         txt = 'System is unstable!';
     }
     $("#stable_result").html(txt);
+    $("#result-card").show();
 }
 
 // Generate HTML for the matrix
@@ -222,4 +227,5 @@ function outputMatrix(matrix) {
     }
 
     $("#rh-matrix").html(mat);
+    $("#rh-matrix-card").show();
 }

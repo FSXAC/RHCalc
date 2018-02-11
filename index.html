@@ -1,138 +1,107 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>&#x1F56F; RHCalc</title>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Muchen's page" />
-    <meta name="author" content="Muchen He" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Simple VGA core sim used in CPEN 311">
+    <meta name="author" content="Muchen He">
+
+    <title>RHCalc</title>
+
     <!-- css -->
-    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+
     <!-- js -->
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="rhcalc.js"></script>
 
     <style>
-        body {
-            cursor: default;
-            font-family: "Segoe UI", sans-serif;
-            color: #111;
-        }
-
-        h1 {
-            font-weight: 100;
-            font-size: 5rem;
-            margin: 5px 0;
-            vertical-align: middle;
-        }
-
-        h2 {
-            font-weight: 500;
-        }
-
-        h3 {
-            font-weight: 500;
-            font-size: 1.7rem;
-        }
-
-        footer {
-            margin: 20px 0;
-        }
-
-        .separator {
-            height: 4em;
-        }
-
-        .coeff-input {
-            width: 4em;
-        }
-
-        .table-matrix {
-            margin-left: auto;
-            margin-right: auto;
-            border: 1px solid #EEE;
-            text-align: center;
-        }
-        .table-matrix td {
-            padding: 0.3em 1em;
-        }
+        body { font-family: "Open Sans", "Segoe UI", sans-serif; }
+        h1 { font-weight: 100; font-size: 3em; }
+        .container { margin-top: 20px; }
+        .coeff-input { width: 4em; }
+        .table-matrix { margin-left: auto; margin-right: auto; border: 1px solid #EEE; text-align: center; }
+        .table-matrix td { padding: 0.3em 1em; }
+        .card { margin-bottom: 2em; }
+        .sup-dense { top: .5em; }
     </style>
 </head>
 
-<body style="padding-top: 70px;">
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">Muchen He</a>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a href="#" class="navbar-brand">RHCalc</a>
+    <ul class="navbar-nav mr-auto">
+        <li role="nav-item">
+            <a class="nav-link" href="/">Made with &#x26A1; by Muchen He</a>
+        </li>
+    </ul>
+    <span class="navbar-text">
+        Documentation coming soon<sup>TM</sup>
+    </span>
+</nav>
+<!-- main content -->
+<div class="container">
+    <header>
+        <h1>Routh Hurwitz Stability Criterion Calculator</h1>
+        <p>I learned about this in ELEC 341, the systems and controls class.</p>
+        <hr>
+    </header>
+    <div class="card">
+        <div class="card-header">
+            <h3>Transfer Function</h3>
         </div>
-        <ul class="nav navbar-nav">
-            <li role="presentation">
-                <a>Routh Hurwitz Stability Criterion Calculator</a>
-            </li>
-        </ul>
-    </nav>
-    <!-- main content -->
-    <div class="container">
-        <header>
-            <h1>Routh Hurwitz Stability Criterion Calculator</h1>
-            <p>I learned about this in ELEC 341, the systems and controls class.</p>
-        </header>
-
-        <div class="separator"></div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Transfer Function</h3>
+        <div class="card-body">
+            <h5 class="card-title">System Order</h5>
+            <div class="input-group">
+                <input id="sys-order" class="coeff-input" type="number" min="1" max="8" value="1" oninput="systemOrderChangeEvent()">
+                <span id="sys-order-text">-th</span>
+                <span> order system</span>
             </div>
-            <div class="panel-body">
-                <p>System order</p>
-                <div class="input-group">
-                    <input id="sys-order" class="coeff-input" type="number" min="1" max="8" value="1" oninput="systemOrderChangeEvent()">
-                    <span id="sys-order-text">-th</span><span> order system</span>
-                </div>
-                <hr>
-                <p>Characteristic Equation (Closed Loop Denominator)</p>
-                <div id="denom_input" class="input-group">
-                    <input id="denom_coeff_1" class="coeff-input" type="number" value="0">
-                    <span><i>s</i>+</span>
-                    <input id="denom_coeff_0"class="coeff-input" type="number" value="1">
-                </div>
-            </div>
-            <div class="panel-footer">
-                <button id="compute-rh" class="btn btn-default">Go!</button>
+            <hr>
+            <h5 class="card-title">Characteristic Equation (Closed Loop Denominator)</h5>
+            <div id="denom_input" class="input-group">
+                <input id="denom_coeff_1" class="coeff-input" type="number" value="0">
+                <span><i>s</i>+</span>
+                <input id="denom_coeff_0"class="coeff-input" type="number" value="1">
             </div>
         </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Matrix</h3>
-            </div>
-            <div class="panel-body">
-                <table id="rh-matrix" class="table-matrix">
-                </table>
-            </div>
+        <div class="card-footer">
+            <button id="compute-rh" class="btn btn-sm btn-outline-primary">Go!</button>
         </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title">Result</h3>
-            </div>
-            <div class="panel-body">
-                <h2 id="stable_result"></h2>
-            </div>
-        </div>
-
-        <div class="separator"></div>
-
-        <footer>
-            <p>Made with -- by Muchen</p>
-            <small>
-                This work is licensed under a
-                <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
-            </small>
-        </footer>
     </div>
+
+
+    <div id="rh-matrix-card" class="card">
+        <div class="card-header">
+            <h3>Matrix</h3>
+        </div>
+        <div class="card-body">
+            <table id="rh-matrix" class="table-matrix">
+            </table>
+        </div>
+    </div>
+
+    <div id="result-card" class="card">
+        <div class="card-header">
+            <h3>Result</h3>
+        </div>
+        <div class="card-body">
+            <!-- <p id="stable_result"></p> -->
+            <div id="stable_result" class="alert alert-success" role="alert">
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <small>
+            This work is licensed under a
+            <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+        </small>
+    </footer>
+</div>
 </body>
